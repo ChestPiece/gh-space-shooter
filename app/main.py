@@ -71,6 +71,6 @@ async def generate(
             },
         )
     except GitHubAPIError as e:
-        raise HTTPException(status_code=400, detail=f"GitHub API error: {e}")
+        raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to generate GIF: {e}")

@@ -5,6 +5,60 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GitHub Space Shooter</title>
     <style>
+        :root {
+            /* Colors - Background */
+            --color-bg-primary: #0d1117;
+            --color-bg-secondary: #161b22;
+            --color-bg-skeleton: #21262d;
+
+            /* Colors - Border */
+            --color-border-default: #30363d;
+            --color-border-focus: #58a6ff;
+
+            /* Colors - Text */
+            --color-text-primary: #c9d1d9;
+            --color-text-secondary: #8b949e;
+
+            /* Colors - Interactive */
+            --color-btn-primary: #238636;
+            --color-btn-primary-hover: #2ea043;
+
+            /* Colors - Error */
+            --color-error-bg: #3d1f1f;
+            --color-error-border: #f85149;
+            --color-error-text: #f85149;
+
+            /* Spacing */
+            --spacing-xs: 0.5rem;
+            --spacing-sm: 0.75rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+            --spacing-xl: 2rem;
+
+            /* Border Radius */
+            --radius-sm: 6px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+
+            /* Typography */
+            --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --font-size-sm: 0.875rem;
+            --font-size-base: 1rem;
+            --font-size-lg: 1.25rem;
+            --font-size-xl: 1.5rem;
+
+            /* Transitions */
+            --transition-fast: 0.2s ease;
+
+            /* Layout */
+            --header-height: 60px;
+            --card-max-width: 840px;
+            --gif-aspect-ratio: 86 / 23;
+        }
+
+        /* ==========================================================================
+           Reset & Base
+           ========================================================================== */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -12,218 +66,298 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #0d1117;
-            color: #c9d1d9;
+            font-family: var(--font-family);
+            background: var(--color-bg-primary);
+            color: var(--color-text-primary);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            padding: 2rem;
         }
 
-        h1 {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-            color: #58a6ff;
-        }
-
-        .subtitle {
-            color: #8b949e;
-            margin-bottom: 2rem;
-        }
-
-        .card {
-            background: #161b22;
-            border: 1px solid #30363d;
-            border-radius: 12px;
-            padding: 2rem;
-            width: 100%;
-            max-width: 500px;
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            color: #c9d1d9;
-        }
-
-        input, select {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            font-size: 1rem;
-            background: #0d1117;
-            border: 1px solid #30363d;
-            border-radius: 6px;
-            color: #c9d1d9;
-        }
-
-        input:focus, select:focus {
-            outline: none;
-            border-color: #58a6ff;
-            box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.3);
-        }
-
-        button {
-            width: 100%;
-            padding: 0.75rem 1.5rem;
-            font-size: 1rem;
-            font-weight: 600;
-            background: #238636;
-            color: #fff;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        button:hover:not(:disabled) {
-            background: #2ea043;
-        }
-
-        button:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
-        .result {
-            margin-top: 2rem;
-            text-align: center;
-        }
-
-        .loading {
-            display: none;
-            align-items: center;
-            justify-content: center;
-            gap: 0.75rem;
-            padding: 2rem;
-            color: #8b949e;
-        }
-
-        .loading.active {
-            display: flex;
-        }
-
-        .spinner {
-            width: 24px;
-            height: 24px;
-            border: 3px solid #30363d;
-            border-top-color: #58a6ff;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .gif-container {
-            display: none;
-            margin-top: 1rem;
-        }
-
-        .gif-container.active {
-            display: block;
-        }
-
-        .gif-container img {
-            max-width: 100%;
-            border-radius: 8px;
-            border: 1px solid #30363d;
-        }
-
-        .error {
-            display: none;
-            background: #3d1f1f;
-            border: 1px solid #f85149;
-            color: #f85149;
-            padding: 1rem;
-            border-radius: 6px;
-            margin-top: 1rem;
-        }
-
-        .error.active {
-            display: block;
-        }
-
-        .download-link {
-            display: inline-block;
-            margin-top: 1rem;
-            color: #58a6ff;
+        a {
             text-decoration: none;
         }
 
-        .download-link:hover {
-            text-decoration: underline;
+        /* ==========================================================================
+           Header
+           ========================================================================== */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: var(--header-height);
+            padding: 0 var(--spacing-xl);
+            border-bottom: 1px solid var(--color-border-default);
+            
+            .logo {
+                font-size: var(--font-size-xl);
+                font-weight: 700;
+                color: var(--color-text-primary);
+            }
+            .github {
+                color: var(--color-text-secondary);
+                transition: color var(--transition-fast);
+                
+                &:hover {
+                    color: var(--color-text-primary);
+                    text-decoration: none;
+                }
+        
+                & svg {
+                    display: block;
+                }
+            }
+        }
+
+        /* ==========================================================================
+           Main Content
+           ========================================================================== */
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-xl);
+            align-items: center;
+            justify-content: center;
+            padding: var(--spacing-xl);
+        }
+
+        /* ==========================================================================
+           Card
+           ========================================================================== */
+        .card {
+            background: var(--color-bg-secondary);
+            border: 1px solid var(--color-border-default);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xl);
+            width: 100%;
+            max-width: var(--card-max-width);
+
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-lg);
+        }
+
+        /* ==========================================================================
+           Form
+           ========================================================================== */
+        #generateForm {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-lg);
+        }
+
+        .row {
+            display: flex;
+            flex-direction: row;
+            gap: var(--spacing-lg);
+            
+            &>* {
+                flex: 1 1;
+            }
+        }
+
+        .form-group {
+            & label {
+                display: block;
+                margin-left: var(--spacing-xs);
+                margin-bottom: var(--spacing-xs);
+                font-weight: 500;
+                color: var(--color-text-primary);
+            }
+
+            input,select {
+                width: 100%;
+                padding: var(--spacing-sm) var(--spacing-md);
+                font-size: var(--font-size-base);
+                background: var(--color-bg-primary);
+                border: 1px solid var(--color-border-default);
+                border-radius: var(--radius-sm);
+                color: var(--color-text-primary);
+                transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+
+                &:focus {
+                    outline: none;
+                    border-color: var(--color-border-focus);
+                    box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.3);
+                }
+            }
+        }
+
+        .btn {
+            width: 100%;
+            padding: var(--spacing-sm) 0;
+            font-size: var(--font-size-base);
+            font-weight: 600;
+            background: var(--color-btn-primary);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: background var(--transition-fast);
+            box-sizing: border-box;
+
+            &:hover {
+                background: var(--color-btn-primary-hover);
+            }
+
+            main[data-state="generation"] &#submitBtn {
+                opacity: 0.6;
+                pointer-events: none;
+            }
+        }
+
+        #gifImageDownload {
+            main:not([data-state="success"]) & {
+                opacity: 0.6;
+                pointer-events: none;
+
+                .btn {
+                    pointer-events: none;
+                }
+            }
+        }
+
+        /* Skeleton Loading */
+        #skeleton {
+            display: none;
+            position: relative;
+            aspect-ratio: var(--gif-aspect-ratio);
+            background: var(--color-bg-skeleton);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            
+            main[data-state="generation"] & {
+                display: block;
+            }
+
+            &::before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background: linear-gradient(
+                    90deg,
+                    transparent,
+                    rgba(255, 255, 255, 0.04),
+                    transparent
+                );
+                animation: shimmer 1.5s infinite;
+            }
+
+            span {
+                position: absolute;
+                inset: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: var(--color-text-secondary);
+                font-size: var(--font-size-sm);
+                animation: pulse 2s ease-in-out infinite;
+            }
+        }
+
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Error */
+        #error {
+            display: none;
+            background: var(--color-error-bg);
+            border: 1px solid var(--color-error-border);
+            color: var(--color-error-text);
+            padding: var(--spacing-md);
+            border-radius: var(--radius-sm);
+
+            main[data-state="error"] & {
+                display: block;
+            }
+        }
+
+        /* GIF */
+        #gifImage {
+            display: none;
+
+            width: 100%;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--color-border-default);
+            aspect-ratio: var(--gif-aspect-ratio);
+
+            main[data-state="success"] & {
+                display: block;
+            }
         }
     </style>
 </head>
 <body>
-    <h1>GitHub Space Shooter</h1>
-    <p class="subtitle">Turn your contribution graph into a space shooter GIF</p>
+    <header class="header">
+        <span class="logo">Github Space Shooter</span>
+        <a href="https://github.com/czl9707/gh-space-shooter"
+           target="_blank"
+           rel="noopener noreferrer"
+           class="github"
+           aria-label="View on GitHub">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+            </svg>
+        </a>
+    </header>
 
-    <div class="card">
-        <form id="generateForm">
-            <div class="form-group">
-                <label for="username">GitHub Username</label>
-                <input type="text" id="username" name="username" placeholder="octocat" required>
+    <main data-state="select">
+        <div class="card">
+            <div class="row">
+                <div class="form-group">
+                    <label for="username">GitHub Username</label>
+                    <input type="text" id="username" name="username" placeholder="octocat" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="strategy">Animation Strategy</label>
+                    <select id="strategy" name="strategy">
+                        <option value="random">Random</option>
+                        <option value="column">Column</option>
+                        <option value="row">Row</option>
+                    </select>
+                </div>
             </div>
+            
+            <button class="btn" id="submitBtn" onclick="handleGeneration()">Generate GIF</button>
 
-            <div class="form-group">
-                <label for="strategy">Animation Strategy</label>
-                <select id="strategy" name="strategy">
-                    <option value="random">Random</option>
-                    <option value="column">Column (Left to Right)</option>
-                    <option value="row">Row (Top to Bottom)</option>
-                </select>
-            </div>
-
-            <button type="submit" id="submitBtn">Generate GIF</button>
-        </form>
-
-        <div class="result">
-            <div class="loading" id="loading">
-                <div class="spinner"></div>
+            <div id="skeleton">
                 <span>Generating your GIF... This may take a moment.</span>
             </div>
-
-            <div class="error" id="error"></div>
-
-            <div class="gif-container" id="gifContainer">
-                <img id="gifImage" alt="Space Shooter GIF">
-                <br>
-                <a id="downloadLink" class="download-link" download>Download GIF</a>
+            <div id="error">Failed to generate GIF</div>
+            <img id="gifImage" alt="Space Shooter GIF">
+            
+            <div class="row">
+                <a id="gifImageDownload" download>
+                    <button class="btn">Download GIF</button>
+                </a>
             </div>
+
         </div>
-    </div>
+    </main>
 
     <script>
-        const form = document.getElementById('generateForm');
-        const submitBtn = document.getElementById('submitBtn');
-        const loading = document.getElementById('loading');
-        const error = document.getElementById('error');
-        const gifContainer = document.getElementById('gifContainer');
+        const main = document.querySelector('main');
         const gifImage = document.getElementById('gifImage');
-        const downloadLink = document.getElementById('downloadLink');
+        const error = document.getElementById('error');
+        const downloadLink = document.getElementById('gifImageDownload');
 
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-
+        async function handleGeneration() {
             const username = document.getElementById('username').value.trim();
             const strategy = document.getElementById('strategy').value;
 
             if (!username) return;
 
-            // Reset state
-            error.classList.remove('active');
-            gifContainer.classList.remove('active');
-            loading.classList.add('active');
-            submitBtn.disabled = true;
+            main.dataset.state = 'generation';
 
             try {
                 const response = await fetch(`/api/generate?username=${encodeURIComponent(username)}&strategy=${encodeURIComponent(strategy)}`);
@@ -239,15 +373,13 @@
                 gifImage.src = url;
                 downloadLink.href = url;
                 downloadLink.download = `${username}-space-shooter.gif`;
-                gifContainer.classList.add('active');
+                main.dataset.state = 'success';
             } catch (err) {
                 error.textContent = err.message;
-                error.classList.add('active');
+                main.dataset.state = 'error';
             } finally {
-                loading.classList.remove('active');
-                submitBtn.disabled = false;
             }
-        });
+        }
     </script>
 </body>
 </html>
